@@ -16,6 +16,8 @@ app.use(cors({origin: 'http://localhost:4200'}))
 
 // Routes
 app.use('/api/employees' ,require('./routes/employee.routes'))
+app.use(express.static('C:\Users\andre\Desktop\App notas MEAN Stack\FullApp\frontend\app\app.component.html'))
+
 
 // Starting server
 mongooose.connect('mongodb+srv://AndreaAldana:Paralelepipedo_98@cluster0.gamk7.mongodb.net/MeanEmployees?retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: true })
