@@ -15,23 +15,31 @@ export class EmployeesComponent implements OnInit {
 
   constructor(public employeeService: EmployeeService) { }
 
-  ngOnInit(): void {
+
+  ngOnInit() {
     this.getEmployees();
   }
 
   addEmployee(form: NgForm) {
+
+    console.log(form.value)
+    if(!form.value.name || !form.value.position || !form.value.office || !form.value.salary){
+      M.toast({html: "You need to fill out every field"});
+      return;
+    }
+
     if(form.value._id){
       this.employeeService.putEmployee(form.value).subscribe(res=> {
         console.log(res);
-        this.resetForm();
         M.toast({html: 'Employee updated'});
         this.getEmployees();
+        form.reset();
       })
     } else (
       this.employeeService.postEmployee(form.value).subscribe(res => {
-      this.resetForm();
-      M.toast({html: 'Employee saved'});
-      this.getEmployees();
+        M.toast({html: 'Employee saved'});
+        this.getEmployees();
+        form.reset()
     }))  
   }
 
@@ -48,11 +56,13 @@ export class EmployeesComponent implements OnInit {
   }
 
   deleteEmployee(_id: string) {
-    this.employeeService.deleteEmployee(_id).subscribe(res =>{
-      console.log(res);
-      M.toast({html: 'Employee was deleted'})
-      this.getEmployees();
-    })
+    if(confirm('Are u sure u want to delete this?')){
+      this.employeeService.deleteEmployee(_id).subscribe(res =>{
+        console.log(res);
+        M.toast({html: 'Employee was deleted'})
+        this.getEmployees();
+      })
+    } 
   }
 
   resetForm(form?: NgForm) {
